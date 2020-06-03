@@ -23,13 +23,15 @@ cr_setup_test <- function(){
   if(run_tests == 0){
     cli_alert_info("Skipping deployment tests")
   }
-
+  
+  if(run_tests %in% c(1:3)){
+    runme <- system.file("example/",
+                           package="googleCloudRunner",
+                           mustWork=TRUE)
+  }
+  
   if(run_tests %in% c(1,2)){
     cli_alert_info("Attempting Docker deployment on Cloud Build via cr_deploy_docker()")
-    runme <- system.file("example/",
-                         package="googleCloudRunner",
-                         mustWork=TRUE)
-
     cd <- cr_deploy_docker(runme, launch_browser = TRUE)
     if(cd$status != "SUCCESS"){
       cli_alert_danger("Something is wrong with Cloud Build setup")
